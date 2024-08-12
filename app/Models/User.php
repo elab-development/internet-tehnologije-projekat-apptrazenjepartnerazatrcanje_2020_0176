@@ -42,4 +42,34 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+
+    // Relacija: Jedan korisnik može imati više planova trčanja
+    public function runPlans()
+    {
+        return $this->hasMany(RunPlan::class);
+    }
+
+    // Relacija: Jedan korisnik može biti učesnik u više trčanja
+    public function runParticipants()
+    {
+        return $this->hasMany(RunParticipant::class);
+    }
+
+    // Relacija: Jedan korisnik može napisati više komentara
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    // Relacija: Jedan korisnik ima jednu statistiku
+    public function userStats()
+    {
+        return $this->hasOne(UserStat::class);
+    }
+    // Relacija: Jedan korisnik ima jednu ulogu
+    public function role()
+    {
+    return $this->belongsTo(Role::class);
+    }
 }

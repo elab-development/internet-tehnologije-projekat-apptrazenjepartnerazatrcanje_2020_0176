@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('user_stats', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            //$table->foreignId('user_id')->constrained()->onDelete('cascade'); // Spoljni ključ ka users
+            $table->float('total_distance'); // Ukupno pređeni kilometri
+            $table->integer('total_runs'); // Ukupan broj trčanja
             $table->timestamps();
         });
     }
