@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\RunPlan;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +13,7 @@ class RunPlansSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        RunPlan::factory(10)->create();
+
     }
 }

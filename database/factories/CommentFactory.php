@@ -7,9 +7,9 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\RunParticipant>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Comments>
  */
-class RunParticipantFactory extends Factory
+class CommentFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -23,6 +23,7 @@ class RunParticipantFactory extends Factory
         return [
             'run_plan_id' => $this->faker->randomElement($runPlanIds),
             'user_id' => $this->faker->randomElement($userIds),
+            'comment' => $this->faker->text(255),
         ];
     }
 }
