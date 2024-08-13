@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -86,5 +87,57 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'Successfully logged out',
         ]);
+    }
+     /**
+     * Update the authenticated user's information.
+     */
+    public function update(Request $request)
+    {
+        // Validiramo unos, zabranjujući promenu email-a
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'password' => 'nullable|string|min:8|confirmed',
+            'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validacija za novu sliku
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        $user = $request->user(); // Dohvatamo trenutno ulogovanog korisnika
+
+        DB::beginTransaction(); // Započinjemo transakciju
+
+        try {
+            // Ako je postavljena nova slika, prvo brišemo staru
+            if ($request->hasFile('profile_photo')) {
+                if ($user->profilePhoto) {
+                    Storage::disk('public')->delete($user->profilePhoto); // Brisanje stare slike
+                }
+
+                // Čuvamo novu sliku i ažuriramo putanju u bazi
+                $user->profilePhoto = $request->file('profile_photo')->store('profile_photos', 'public');
+            }
+
+            // Ažuriramo ostale atribute korisnika
+            $user->name = $request->name;
+
+            // Ako je postavljena nova lozinka, hashujemo je i ažuriramo
+            if ($request->password) {
+                $user->password = Hash::make($request->password);
+            }
+
+            $user->save(); // Čuvamo promene u bazi
+
+            DB::commit(); // Zatvaramo transakciju
+
+            return response()->json([
+                'message' => 'User updated successfully',
+                'profile_photo_url' => $user->profilePhoto ? Storage::url($user->profilePhoto) : null,
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack(); // U slučaju greške, vraćamo promene
+            return response()->json(['error' => 'An error occurred while updating the user.'], 500);
+        }
     }
 }
