@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
@@ -19,28 +20,36 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
+            'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Dodato za validaciju slike
         ]);
-
+    
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
-
+    
+        $profilePhotoPath = null;
+        
+        // Proveravamo da li je slika postavljena
+        if ($request->hasFile('profile_photo')) {
+            $profilePhotoPath = $request->file('profile_photo')->store('profile_photos', 'public');
+        }
+    
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'profilePhoto' => $request->profilePhoto,
+            'profilePhoto' => $profilePhotoPath, // Čuvamo putanju slike u bazi
             'role_id' => $request->role_id,
         ]);
-
+    
         $token = $user->createToken('auth_token')->plainTextToken;
-
+    
         return response()->json([
             'access_token' => $token,
             'token_type' => 'Bearer',
+            'profile_photo_url' => $profilePhotoPath ? Storage::url($profilePhotoPath) : null,
         ]);
     }
-
     /**
      * Log in an existing user.
      */
