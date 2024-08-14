@@ -70,4 +70,20 @@ class RunParticipantController extends Controller
 
         return response()->json(null, 204);
     }
+
+     // Fetch all run participants with sorting
+     public function sort(Request $request)
+     {
+         $validator = Validator::make($request->all(), [
+             'sort_by' => 'required|string|in:run_plan_id,user_id,created_at,updated_at', // Specify the allowed columns for sorting
+             'order' => 'required|string|in:asc,desc', // Specify the allowed order types
+         ]);
+ 
+         if ($validator->fails()) {
+             return response()->json(['errors' => $validator->errors()], 422);
+         }
+ 
+         $runParticipants = RunParticipant::orderBy($request->sort_by, $request->order)->get();
+         return RunParticipantResource::collection($runParticipants);
+     }
 }

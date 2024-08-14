@@ -27,7 +27,8 @@ Route::put('/user', [AuthController::class, 'update'])->middleware('auth:sanctum
 
 Route::get('/run-plans', [RunPlanController::class, 'index']);
 Route::get('/comments', [CommentController::class, 'index']);
-
+Route::get('/run-plans/search', [RunPlanController::class, 'search']); // Advanced search route
+Route::get('/run-participants/sort', [RunParticipantController::class, 'sort']); // Sorting route
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/run-participants', [RunParticipantController::class, 'index']);
@@ -35,14 +36,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/run-participants', [RunParticipantController::class, 'store']);
     Route::put('/run-participants/{id}', [RunParticipantController::class, 'update']);
     Route::delete('/run-participants/{id}', [RunParticipantController::class, 'destroy']);
-
+    
 
     
     Route::get('/run-plans/{id}', [RunPlanController::class, 'show']);
     Route::post('/run-plans', [RunPlanController::class, 'store']);
     Route::put('/run-plans/{id}', [RunPlanController::class, 'update']);
     Route::delete('/run-plans/{id}', [RunPlanController::class, 'destroy']);
-
+    
 
    
     Route::get('/comments/{id}', [CommentController::class, 'show']);

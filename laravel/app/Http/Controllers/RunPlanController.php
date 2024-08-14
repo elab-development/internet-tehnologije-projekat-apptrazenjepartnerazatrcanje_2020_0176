@@ -86,4 +86,38 @@ class RunPlanController extends Controller
 
         return response()->json(null, 204);
     }
+
+      // Advanced search for run plans
+      public function search(Request $request)
+      {
+          $query = RunPlan::query();
+  
+          if ($request->has('location')) {
+              $query->where('location', 'LIKE', '%' . $request->location . '%');
+          }
+  
+          if ($request->has('latitude')) {
+              $query->where('latitude', $request->latitude);
+          }
+  
+          if ($request->has('longitude')) {
+              $query->where('longitude', $request->longitude);
+          }
+  
+          if ($request->has('time')) {
+              $query->where('time', $request->time);
+          }
+  
+          if ($request->has('distance')) {
+              $query->where('distance', $request->distance);
+          }
+  
+          if ($request->has('user_id')) {
+              $query->where('user_id', $request->user_id);
+          }
+  
+          $runPlans = $query->get();
+  
+          return RunPlanResource::collection($runPlans);
+      }
 }
