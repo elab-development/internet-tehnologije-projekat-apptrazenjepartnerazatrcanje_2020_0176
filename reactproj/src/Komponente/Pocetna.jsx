@@ -1,14 +1,17 @@
 import React from 'react';
 import './Pocetna.css';
 import { FaRunning, FaMapMarkerAlt, FaUsers, FaRegClock } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const Pocetna = () => {
   return (
     <div className="pocetna-container">
       <div className="pocetna-content">
-        <div className="pocetna-text">
+      <div className="pocetna-text">
           <h1>Find Your Running Partner</h1>
           <p>Join our community and connect with runners near you!</p>
+          <Link to="/register" className="pocetna-link">Register</Link>
+          <Link to="/login" className="pocetna-link">Login</Link>
         </div>
         <div className="pocetna-grid">
           <div className="pocetna-card">
