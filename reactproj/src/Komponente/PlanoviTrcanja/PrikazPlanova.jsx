@@ -1,24 +1,11 @@
+import React from 'react';
  
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import PlanKartica from './PlanKartica'; 
 import './PrikazPlanova.css';
+import useFetchData from '../hooks/useFetchData';
 
 const PrikazPlanova = () => {
-  const [runPlans, setRunPlans] = useState([]);
-
-  useEffect(() => {
-    const fetchRunPlans = async () => {
-      try {
-        const response = await axios.get('http://127.0.0.1:8000/api/run-plans');
-        setRunPlans(response.data.data);  
-      } catch (error) {
-        console.error('Error fetching run plans:', error);
-      }
-    };
-
-    fetchRunPlans();
-  }, []);
+  const [runPlans] = useFetchData('http://127.0.0.1:8000/api/run-plans');
 
   return (
     <div className="prikaz-planova-container">
