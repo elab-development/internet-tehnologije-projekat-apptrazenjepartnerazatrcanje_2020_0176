@@ -1,6 +1,8 @@
+ 
 import React, { useState } from 'react';
 import axios from 'axios';
 import './Login.css';
+import PoljeZaUnos from './PoljeZaUnos';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -40,18 +42,22 @@ const Login = () => {
       <div className="login-content">
         <h1>Login</h1>
         <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Email</label>
-            <input type="email" name="email" value={formData.email} onChange={handleInputChange} />
-            {errors.email && <p className="error-text">{errors.email[0]}</p>}
-          </div>
-
-          <div className="form-group">
-            <label>Password</label>
-            <input type="password" name="password" value={formData.password} onChange={handleInputChange} />
-            {errors.password && <p className="error-text">{errors.password[0]}</p>}
-          </div>
-
+          <PoljeZaUnos
+            label="Email"
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleInputChange}
+            error={errors.email ? errors.email[0] : null}
+          />
+          <PoljeZaUnos
+            label="Password"
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleInputChange}
+            error={errors.password ? errors.password[0] : null}
+          />
           {errors.login && <p className="error-text">{errors.login}</p>}
           <button type="submit">Login</button>
           {successMessage && <p className="success-text">{successMessage}</p>}

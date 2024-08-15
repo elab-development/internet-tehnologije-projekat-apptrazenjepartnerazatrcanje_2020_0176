@@ -1,6 +1,9 @@
+ 
 import React, { useState } from 'react';
 import axios from 'axios';
 import './Registracija.css';
+import PoljeZaUnos from './PoljeZaUnos';
+ 
 
 const Registracija = () => {
   const [formData, setFormData] = useState({
@@ -57,30 +60,38 @@ const Registracija = () => {
       <div className="registracija-content">
         <h1>Register</h1>
         <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Name</label>
-            <input type="text" name="name" value={formData.name} onChange={handleInputChange} />
-            {errors.name && <p className="error-text">{errors.name[0]}</p>}
-          </div>
-
-          <div className="form-group">
-            <label>Email</label>
-            <input type="email" name="email" value={formData.email} onChange={handleInputChange} />
-            {errors.email && <p className="error-text">{errors.email[0]}</p>}
-          </div>
-
-          <div className="form-group">
-            <label>Password</label>
-            <input type="password" name="password" value={formData.password} onChange={handleInputChange} />
-            {errors.password && <p className="error-text">{errors.password[0]}</p>}
-          </div>
-
-          <div className="form-group">
-            <label>Confirm Password</label>
-            <input type="password" name="password_confirmation" value={formData.password_confirmation} onChange={handleInputChange} />
-            {errors.password_confirmation && <p className="error-text">{errors.password_confirmation[0]}</p>}
-          </div>
-
+          <PoljeZaUnos
+            label="Name"
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleInputChange}
+            error={errors.name ? errors.name[0] : null}
+          />
+          <PoljeZaUnos
+            label="Email"
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleInputChange}
+            error={errors.email ? errors.email[0] : null}
+          />
+          <PoljeZaUnos
+            label="Password"
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleInputChange}
+            error={errors.password ? errors.password[0] : null}
+          />
+          <PoljeZaUnos
+            label="Confirm Password"
+            type="password"
+            name="password_confirmation"
+            value={formData.password_confirmation}
+            onChange={handleInputChange}
+            error={errors.password_confirmation ? errors.password_confirmation[0] : null}
+          />
           <div className="form-group">
             <label>Profile Photo</label>
             <input type="file" name="profile_photo" onChange={handleFileChange} />
