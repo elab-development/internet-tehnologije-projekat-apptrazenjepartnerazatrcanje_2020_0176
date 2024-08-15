@@ -5,6 +5,7 @@ import Pocetna from './Komponente/Pocetna';
 import Registracija from './Komponente/Auth/Registracija';
 import Login from './Komponente/Auth/Login';
 import PrikazPlanova from './Komponente/PlanoviTrcanja/PrikazPlanova';
+import 'leaflet/dist/leaflet.css';
 
 function App() {
   return (
