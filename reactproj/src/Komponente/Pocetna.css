@@ -1,0 +1,51 @@
+.pocetna-container {
+    background-image: url('https://www.beyondendurance.com/wp-content/uploads/2023/07/pexels-pixabay-235922.jpg'); /* Putanja do pozadinske slike */
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .pocetna-content {
+    text-align: left;
+    max-width: 1200px;
+    color: white;
+  }
+  
+  .pocetna-text h1 {
+    font-size: 3em;
+    font-weight: bold;
+  }
+  
+  .pocetna-text p {
+    font-size: 1em;
+    margin-top: -10px;
+  }
+  
+  .pocetna-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 20px;
+    margin-top: 40px;
+  }
+  
+  .pocetna-card {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    color: #333;
+  }
+  
+  .pocetna-icon {
+    font-size: 3em;
+    margin-bottom: 10px;
+    color: #333; 
+  }
+  
+  .pocetna-card h2 {
+    font-size: 1.5em;
+    margin: 0;
+  }
