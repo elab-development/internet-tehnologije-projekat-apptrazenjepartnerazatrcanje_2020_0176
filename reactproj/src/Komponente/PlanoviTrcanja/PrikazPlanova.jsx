@@ -1,6 +1,7 @@
  
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import PlanKartica from './PlanKartica'; 
 import './PrikazPlanova.css';
 
 const PrikazPlanova = () => {
@@ -25,13 +26,7 @@ const PrikazPlanova = () => {
       <div className="planovi-grid">
         {runPlans.length > 0 ? (
           runPlans.map((plan) => (
-            <div key={plan.id} className="plan-card">
-              <h2>{plan.location}</h2>
-              <p>Date: {plan.time}</p>
-              <p>Distance: {plan.distance} km</p>
-              <p>Latitude: {plan.latitude}</p>
-              <p>Longitude: {plan.longitude}</p>
-            </div>
+            <PlanKartica key={plan.id} plan={plan} />  
           ))
         ) : (
           <p>No running plans found.</p>
