@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
         DB::table('roles')->insert([
             ['name' => 'Admin'],
             ['name' => 'Ulogovan'],
-            ['name' => 'Neulogovan'],
+           // ['name' => 'Neulogovan'],
         ]);
         
         User::factory(10)->create();

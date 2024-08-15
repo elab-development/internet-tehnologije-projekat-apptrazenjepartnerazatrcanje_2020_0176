@@ -14,14 +14,12 @@ class Comment extends Model
         'user_id',
         'comment',
     ];
-
-    // Relacija: Komentar pripada planu trčanja
+ 
     public function runPlan()
     {
         return $this->belongsTo(RunPlan::class);
     }
-
-    // Relacija: Komentar pripada korisniku
+ 
     public function user()
     {
         return $this->belongsTo(User::class);

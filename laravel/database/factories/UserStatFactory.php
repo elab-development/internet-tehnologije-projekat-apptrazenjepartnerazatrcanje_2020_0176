@@ -17,7 +17,9 @@ class UserStatFactory extends Factory
     public function definition(): array
     {
         return [
-           //
+            'user_id' => \App\Models\User::factory(), // Creates a new user and assigns it to user_id
+            'total_distance' => $this->faker->numberBetween(0, 1000), // Random distance between 0 and 1000
+            'total_runs' => $this->faker->numberBetween(0, 100), // Random number of runs between 0 and 100
         ];
     }
 }

@@ -21,7 +21,7 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Dodato za validaciju slike
+            'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg', // Dodato za validaciju slike
         ]);
     
         if ($validator->fails()) {
@@ -40,7 +40,7 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'profilePhoto' => $profilePhotoPath, // Čuvamo putanju slike u bazi
-            'role_id' => $request->role_id,
+            'role_id' => 2, //svaki put kad se registruje uvek ce biti obican ulogovan korisnik
         ]);
     
         $token = $user->createToken('auth_token')->plainTextToken;
@@ -97,7 +97,7 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'password' => 'nullable|string|min:8|confirmed',
-            'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validacija za novu sliku
+            'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg', // Validacija za novu sliku
         ]);
 
         if ($validator->fails()) {

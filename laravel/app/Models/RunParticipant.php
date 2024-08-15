@@ -14,13 +14,13 @@ class RunParticipant extends Model
         'user_id',
     ];
 
-    // Relacija: Učesnik pripada planu trčanja
+ 
     public function runPlan()
     {
         return $this->belongsTo(RunPlan::class);
     }
 
-    // Relacija: Učesnik pripada korisniku
+ 
     public function user()
     {
         return $this->belongsTo(User::class);

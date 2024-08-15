@@ -15,7 +15,7 @@ class UserStat extends Model
         'total_runs',
     ];
 
-    // Relacija: Statistika pripada korisniku
+ 
     public function user()
     {
         return $this->belongsTo(User::class);

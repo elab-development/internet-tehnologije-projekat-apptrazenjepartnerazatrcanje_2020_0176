@@ -21,9 +21,9 @@ class RunPlanResource extends JsonResource
             'longitude' => $this->longitude,
             'time' => $this->time,
             'distance' => $this->distance,
-            'user' => new UserResource($this->user),
-            'participants' => RunParticipantResource::collection($this->participants),
-            'comments' => CommentResource::collection($this->comments),
+          //  'user' => new UserResource($this->user),
+         //   'participants' => RunParticipantResource::collection($this->participants),
+         //   'comments' => CommentResource::collection($this->comments),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
