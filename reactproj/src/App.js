@@ -5,7 +5,9 @@ import Pocetna from './Komponente/Pocetna';
 import Registracija from './Komponente/Auth/Registracija';
 import Login from './Komponente/Auth/Login';
 import PrikazPlanova from './Komponente/PlanoviTrcanja/PrikazPlanova';
+ 
 import 'leaflet/dist/leaflet.css';
+import Navbar from './Komponente/Navigacija/Navbar';
 
 function App() {
   const [token, setToken] = useState(null);
@@ -21,6 +23,7 @@ function App() {
   return (
     <Router>
       <div className="App">
+        <Navbar token={token} setToken={setToken} />
         <Routes>
           <Route path="/" element={<Pocetna />} />
           <Route path="/register" element={<Registracija />} />
