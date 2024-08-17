@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
 import PoljeZaUnos from './PoljeZaUnos';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const Login = ({ setToken }) => {
   const [formData, setFormData] = useState({
@@ -12,6 +13,7 @@ const Login = ({ setToken }) => {
 
   const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -49,6 +51,10 @@ const Login = ({ setToken }) => {
     }
   };
 
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div className="login-container">
       <div className="login-content">
@@ -62,14 +68,19 @@ const Login = ({ setToken }) => {
             onChange={handleInputChange}
             error={errors.email ? errors.email[0] : null}
           />
-          <PoljeZaUnos
-            label="Password"
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleInputChange}
-            error={errors.password ? errors.password[0] : null}
-          />
+          <div className="password-input-container">
+            <PoljeZaUnos
+              label="Password"
+              type={showPassword ? "text" : "password"}
+              name="password"
+              value={formData.password}
+              onChange={handleInputChange}
+              error={errors.password ? errors.password[0] : null}
+            />
+            <button type="button" onClick={toggleShowPassword} className="password-toggle-button">
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </button>
+          </div>
           {errors.login && <p className="error-text">{errors.login}</p>}
           <button type="submit">Login</button>
           {successMessage && <p className="success-text">{successMessage}</p>}
