@@ -8,6 +8,7 @@ import PrikazPlanova from './Komponente/PlanoviTrcanja/PrikazPlanova';
  
 import 'leaflet/dist/leaflet.css';
 import Navbar from './Komponente/Navigacija/Navbar';
+import MojProfil from './Komponente/Auth/MojProfil';
 
 function App() {
   const [token, setToken] = useState(null);
@@ -31,6 +32,7 @@ function App() {
             path="/login" 
             element={<Login setToken={setToken} />} 
           />
+          <Route path="/profile" element={<MojProfil />} />
           <Route path="/run-plans" element={<PrikazPlanova />} />
         </Routes>
       </div>

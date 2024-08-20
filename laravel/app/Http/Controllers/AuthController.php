@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\RunPlanResource;
+use App\Models\RunPlan;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -140,4 +142,21 @@ class AuthController extends Controller
             return response()->json(['error' => 'An error occurred while updating the user.'], 500);
         }
     }
+    public function getUserInfo(Request $request)
+    {
+        $user = $request->user(); // Dohvatamo trenutno ulogovanog korisnika
+        
+        // Dohvatamo sve planove trčanja koje je korisnik kreirao
+        $runPlans = RunPlan::where('user_id', $user->id)->get();
+        
+        return response()->json([
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'profile_photo_url' => $user->profilePhoto ? Storage::url($user->profilePhoto) : null,
+            'role_id' => $user->role_id,
+            'run_plans' => RunPlanResource::collection($runPlans), // Vraćamo kolekciju planova trčanja
+        ]);
+    }
+    
 }

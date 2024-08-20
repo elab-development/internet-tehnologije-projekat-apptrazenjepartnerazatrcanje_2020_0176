@@ -44,7 +44,6 @@ const Registracija = () => {
     if (formData.profile_photo) {
       form.append('profile_photo', formData.profile_photo);
     }
-
     try {
       const response = await axios.post('http://127.0.0.1:8000/api/register', form);
       setSuccessMessage('Registration successful!');

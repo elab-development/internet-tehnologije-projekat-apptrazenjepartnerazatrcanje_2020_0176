@@ -33,6 +33,7 @@ const Navbar = ({ token, setToken }) => {
         <Link to="/" className="navbar-link">Home</Link>
         {token ? (
           <>
+            <Link to="/profile" className="navbar-link">My profile</Link>
             <Link to="/run-plans" className="navbar-link">Running Plans</Link>
             <button onClick={handleLogout} className="navbar-link logout-button">Logout</button>
           </>
