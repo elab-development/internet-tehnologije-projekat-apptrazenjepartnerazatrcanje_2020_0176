@@ -26,5 +26,5 @@ export const useUserProfile = () => {
     fetchUser();
   }, []);
 
-  return { user, loading, error };
+  return { user, loading, error,setUser };
 };

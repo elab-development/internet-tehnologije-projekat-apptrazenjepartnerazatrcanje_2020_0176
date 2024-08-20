@@ -1,10 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useUserProfile } from '../hooks/useUserProfile';
 import { useTable, useSortBy, usePagination, useGlobalFilter } from 'react-table';
 import { matchSorter } from 'match-sorter';
+import axios from 'axios';
+import Modal from 'react-modal';
 
 const MojProfil = () => {
-  const { user, loading, error } = useUserProfile();
+  const { user, loading, error, setUser } = useUserProfile();
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [newPlan, setNewPlan] = useState({
+    location: 'Central Park',
+    latitude: '40.785091',
+    longitude: '-73.968285',
+    time: new Date().toISOString().slice(0, 16), // Trenutno vreme formatirano za `datetime-local` input
+    distance: '5',
+  });
 
   const columns = React.useMemo(
     () => [
@@ -56,6 +66,49 @@ const MojProfil = () => {
 
   const { globalFilter, pageIndex, pageSize } = state;
 
+  const handleInputChange = (e) => {
+    setNewPlan({
+      ...newPlan,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      // Izvucite token iz session storage-a
+      const token = sessionStorage.getItem('auth_token');
+  
+      // Konvertujemo `time` u format `Y-m-d H:i:s`
+      const formattedTime = new Date(newPlan.time).toISOString().slice(0, 19).replace('T', ' ');
+  
+      const response = await axios.post(
+        'http://127.0.0.1:8000/api/run-plans',
+        {
+          ...newPlan,
+          time: formattedTime, // Postavimo pravilno formatirano vreme
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+  
+      // Ažuriramo stanje korisnika sa novim planom
+      setUser(prevState => ({
+        ...prevState,
+        run_plans: [...prevState.run_plans, response.data.data],
+      }));
+  
+      setModalIsOpen(false);
+      setNewPlan({ location: '', latitude: '', longitude: '', time: '', distance: '' });
+    } catch (err) {
+      console.error('Error adding plan:', err);
+    }
+  };
+  
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
@@ -76,6 +129,9 @@ const MojProfil = () => {
             </div>
 
             <h2>Planovi Trčanja</h2>
+            <button onClick={() => setModalIsOpen(true)} className="add-plan-button">
+              Dodaj Plan Trčanja
+            </button>
             <input
               value={globalFilter || ''}
               onChange={(e) => setGlobalFilter(e.target.value)}
@@ -150,6 +206,43 @@ const MojProfil = () => {
             ) : (
               <p>Nema planova trčanja.</p>
             )}
+
+            {/* Modal za dodavanje novog plana trčanja */}
+            <Modal
+              isOpen={modalIsOpen}
+              onRequestClose={() => setModalIsOpen(false)}
+              contentLabel="Dodaj Plan Trčanja"
+              className="modal-content"
+              overlayClassName="modal-overlay"
+            >
+              <h2>Dodaj Novi Plan Trčanja</h2>
+              <form onSubmit={handleSubmit} className="form">
+                <label>
+                  Lokacija:
+                  <input type="text" name="location" value={newPlan.location} onChange={handleInputChange} required />
+                </label>
+                <label>
+                  Latitude:
+                  <input type="text" name="latitude" value={newPlan.latitude} onChange={handleInputChange} required />
+                </label>
+                <label>
+                  Longitude:
+                  <input type="text" name="longitude" value={newPlan.longitude} onChange={handleInputChange} required />
+                </label>
+                <label>
+                  Datum i Vreme:
+                  <input type="datetime-local" name="time" value={newPlan.time} onChange={handleInputChange} required />
+                </label>
+                <label>
+                  Distanca (km):
+                  <input type="number" name="distance" value={newPlan.distance} onChange={handleInputChange} required />
+                </label>
+                <button type="submit">Dodaj Plan</button>
+                <button type="button" onClick={() => setModalIsOpen(false)}>
+                  Zatvori
+                </button>
+              </form>
+            </Modal>
           </div>
         ) : (
           <p>Nema dostupnih podataka o korisniku.</p>

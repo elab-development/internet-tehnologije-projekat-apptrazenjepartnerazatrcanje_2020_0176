@@ -31,9 +31,13 @@ function App() {
           <Route 
             path="/login" 
             element={<Login setToken={setToken} />} 
-          />
-          <Route path="/profile" element={<MojProfil />} />
+          />       
           <Route path="/run-plans" element={<PrikazPlanova />} />
+
+
+
+
+          <Route path="/profile" element={<MojProfil />} />
         </Routes>
       </div>
     </Router>
