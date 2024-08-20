@@ -6,6 +6,9 @@ use App\Models\RunPlan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\RunPlanResource;
+use App\Models\Comment;
+use App\Models\RunParticipant;
+use Illuminate\Support\Facades\DB;
 
 class RunPlanController extends Controller
 {
@@ -81,10 +84,27 @@ class RunPlanController extends Controller
     // Delete a run plan
     public function destroy($id)
     {
-        $runPlan = RunPlan::findOrFail($id);
-        $runPlan->delete();
+        DB::beginTransaction();
 
-        return response()->json(null, 204);
+        try {
+            $runPlan = RunPlan::findOrFail($id);
+
+            // Brisanje svih komentara povezanih sa planom trčanja
+            Comment::where('run_plan_id', $runPlan->id)->delete();
+
+            // Brisanje svih učesnika povezanih sa planom trčanja
+            RunParticipant::where('run_plan_id', $runPlan->id)->delete();
+
+            // Brisanje samog plana trčanja
+            $runPlan->delete();
+
+            DB::commit();
+
+            return response()->json(null, 204);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['error' => 'An error occurred while deleting the run plan.'], 500);
+        }
     }
 
       // Advanced search for run plans
