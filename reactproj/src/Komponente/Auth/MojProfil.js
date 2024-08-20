@@ -30,9 +30,21 @@ const MojProfil = () => {
         Header: 'Distanca (km)',
         accessor: 'distance',
       },
+      {
+        Header: 'Akcije',
+        Cell: ({ row }) => (
+          <button
+            onClick={() => handleDelete(row.original.id)}
+            className="delete-plan-button"
+          >
+            Obriši
+          </button>
+        ),
+      },
     ],
     []
   );
+  
 
   const data = React.useMemo(() => user?.run_plans || [], [user]);
 
@@ -105,6 +117,26 @@ const MojProfil = () => {
       setNewPlan({ location: '', latitude: '', longitude: '', time: '', distance: '' });
     } catch (err) {
       console.error('Error adding plan:', err);
+    }
+  };
+  const handleDelete = async (planId) => {
+    try {
+      // Izvucite token iz session storage-a
+      const token = sessionStorage.getItem('auth_token');
+  
+      await axios.delete(`http://127.0.0.1:8000/api/run-plans/${planId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      // Ažuriramo stanje korisnika tako da uklonimo obrisani plan
+      setUser(prevState => ({
+        ...prevState,
+        run_plans: prevState.run_plans.filter(plan => plan.id !== planId),
+      }));
+    } catch (err) {
+      console.error('Error deleting plan:', err);
     }
   };
   
