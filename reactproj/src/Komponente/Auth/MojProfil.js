@@ -8,12 +8,17 @@ import Modal from 'react-modal';
 const MojProfil = () => {
   const { user, loading, error, setUser } = useUserProfile();
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const [newPlan, setNewPlan] = useState({
     location: 'Central Park',
     latitude: '40.785091',
     longitude: '-73.968285',
     time: new Date().toISOString().slice(0, 16), // Trenutno vreme formatirano za `datetime-local` input
     distance: '5',
+  });
+  const [editUser, setEditUser] = useState({
+    name: user?.name || '',
+    profile_photo: null,  
   });
 
   const columns = React.useMemo(
@@ -44,7 +49,6 @@ const MojProfil = () => {
     ],
     []
   );
-  
 
   const data = React.useMemo(() => user?.run_plans || [], [user]);
 
@@ -85,6 +89,14 @@ const MojProfil = () => {
     });
   };
 
+  const handleUserInputChange = (e) => {
+    const { name, value, files } = e.target;
+    setEditUser((prevUser) => ({
+      ...prevUser,
+      [name]: files ? files[0] : value,
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -119,9 +131,43 @@ const MojProfil = () => {
       console.error('Error adding plan:', err);
     }
   };
+
+  const handleUpdateUser = async (e) => {
+    e.preventDefault();
+    try {
+      const token = sessionStorage.getItem('auth_token');
+      const formData = new FormData();
+      formData.append('name', editUser.name);
+      if (editUser.profile_photo) {
+        formData.append('profile_photo', editUser.profile_photo);
+      }
+
+      const response = await axios.put(
+        'http://127.0.0.1:8000/api/user',
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+
+      // Ažuriramo stanje korisnika sa ažuriranim podacima
+      setUser(prevState => ({
+        ...prevState,
+        name: response.data.name,
+        profile_photo_url: response.data.profile_photo_url,
+      }));
+
+      setEditModalIsOpen(false);
+    } catch (err) {
+      console.error('Error updating user:', err);
+    }
+  };
+
   const handleDelete = async (planId) => {
     try {
-      // Izvucite token iz session storage-a
       const token = sessionStorage.getItem('auth_token');
   
       await axios.delete(`http://127.0.0.1:8000/api/run-plans/${planId}`, {
@@ -139,7 +185,6 @@ const MojProfil = () => {
       console.error('Error deleting plan:', err);
     }
   };
-  
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
@@ -157,6 +202,9 @@ const MojProfil = () => {
                 <h1>{user.name}</h1>
                 <p>Email: {user.email}</p>
                 <p>Uloga: {user.role_id === 1 ? 'Admin' : 'Korisnik'}</p>
+                <button onClick={() => setEditModalIsOpen(true)} className="edit-profile-button">
+                  Ažuriraj Profil
+                </button>
               </div>
             </div>
 
@@ -271,6 +319,31 @@ const MojProfil = () => {
                 </label>
                 <button type="submit">Dodaj Plan</button>
                 <button type="button" onClick={() => setModalIsOpen(false)}>
+                  Zatvori
+                </button>
+              </form>
+            </Modal>
+
+            {/* Modal za ažuriranje korisničkih podataka */}
+            <Modal
+              isOpen={editModalIsOpen}
+              onRequestClose={() => setEditModalIsOpen(false)}
+              contentLabel="Ažuriraj Profil"
+              className="modal-content"
+              overlayClassName="modal-overlay"
+            >
+              <h2>Ažuriraj Profil</h2>
+              <form onSubmit={handleUpdateUser} className="form">
+                <label>
+                  Ime:
+                  <input type="text" name="name" value={editUser.name} onChange={handleUserInputChange} required />
+                </label>
+                <label>
+                  Profilna slika:
+                  <input type="file" name="profile_photo" accept="image/*" onChange={handleUserInputChange} />
+                </label>
+                <button type="submit">Ažuriraj Profil</button>
+                <button type="button" onClick={() => setEditModalIsOpen(false)}>
                   Zatvori
                 </button>
               </form>

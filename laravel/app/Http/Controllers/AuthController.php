@@ -97,7 +97,7 @@ class AuthController extends Controller
     {
         // Validiramo unos, zabranjujući promenu email-a
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
+            'name' => 'nullable|string|max:255',
             'password' => 'nullable|string|min:8|confirmed',
             'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg', // Validacija za novu sliku
         ]);
