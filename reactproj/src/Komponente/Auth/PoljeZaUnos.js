@@ -1,6 +1,6 @@
  
 import React from 'react';
-import './PoljeZaUnos.css';
+ 
 
 const PoljeZaUnos = ({ label, type, name, value, onChange, error }) => {
   return (
