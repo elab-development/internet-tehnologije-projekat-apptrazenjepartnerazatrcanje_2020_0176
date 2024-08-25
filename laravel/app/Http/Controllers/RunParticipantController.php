@@ -26,21 +26,33 @@ class RunParticipantController extends Controller
     // Create a new run participant
     public function store(Request $request)
     {
+        // Validacija ulaznih podataka
         $validator = Validator::make($request->all(), [
             'run_plan_id' => 'required|exists:run_plans,id',
         ]);
-
+    
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
-
+    
+        // Provera da li je korisnik već prijavljen za ovu trku
+        $existingParticipant = RunParticipant::where('run_plan_id', $request->run_plan_id)
+            ->where('user_id', auth()->id())
+            ->first();
+    
+        if ($existingParticipant) {
+            return response()->json(['error' => 'You have already joined this run plan.'], 409);
+        }
+    
+        // Kreiranje novog učesnika trke
         $runParticipant = RunParticipant::create([
             'run_plan_id' => $request->run_plan_id,
-            'user_id' => auth()->id(), // Get the logged-in user's ID
+            'user_id' => auth()->id(), // Dohvata ID trenutno ulogovanog korisnika
         ]);
-
+    
         return new RunParticipantResource($runParticipant);
     }
+    
 
     // Update an existing run participant
     public function update(Request $request, $id)

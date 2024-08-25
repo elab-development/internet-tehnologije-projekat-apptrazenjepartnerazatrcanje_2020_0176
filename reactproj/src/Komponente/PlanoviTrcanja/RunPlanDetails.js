@@ -45,6 +45,22 @@ const RunPlanDetails = () => {
     fetchRunPlan();
   }, [id]);
 
+  const handleDeleteParticipant = async (participantId) => {
+    try {
+      const token = sessionStorage.getItem('auth_token');
+      await axios.delete(`http://127.0.0.1:8000/api/run-participants/${participantId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      // Ažuriraj listu učesnika nakon brisanja
+      setParticipants(participants.filter(participant => participant.id !== participantId));
+    } catch (err) {
+      setError('Failed to remove participant.');
+      console.error(err);
+    }
+  };
+
   if (error) return <p>{error}</p>;
   if (!runPlan) return <p>Loading...</p>;
 
@@ -56,14 +72,22 @@ const RunPlanDetails = () => {
       <p>Latitude: {runPlan.latitude}</p>
       <p>Longitude: {runPlan.longitude}</p>
 
-      <h3>Participants</h3>
+      <h3>Participants ({participants.length})</h3>
       <ul>
         {participants.map(participant => (
-          <li key={participant.id}>{participant.user.name}</li>
+          <li key={participant.id}>
+            {participant.user.name}
+            <button 
+              onClick={() => handleDeleteParticipant(participant.id)} 
+              className="delete-participant-button"
+            >
+              Remove
+            </button>
+          </li>
         ))}
       </ul>
 
-      <h3>Comments</h3>
+      <h3>Comments ({comments.length})</h3>
       <ul>
         {comments.map(comment => (
           <li key={comment.id}>
