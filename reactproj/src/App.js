@@ -11,6 +11,7 @@ import Navbar from './Komponente/Navigacija/Navbar';
 import MojProfil from './Komponente/Auth/MojProfil';
 import RunPlanDetails from './Komponente/PlanoviTrcanja/RunPlanDetails';
 import UserStats from './Komponente/Stats/UserStats';
+import ExerciseList from './Komponente/SpoljniApi/ExerciseList';
 
 function App() {
   const [token, setToken] = useState(null);
@@ -40,6 +41,8 @@ function App() {
 
 
           <Route path="/userStats" element={<UserStats />} />
+          <Route path="/exercises" element={<ExerciseList />} />
+
 
           <Route path="/profile" element={<MojProfil />} />
         </Routes>

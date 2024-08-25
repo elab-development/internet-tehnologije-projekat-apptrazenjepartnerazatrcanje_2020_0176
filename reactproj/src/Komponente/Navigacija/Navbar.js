@@ -34,11 +34,14 @@ const Navbar = ({ token, setToken }) => {
         {token ? (
           <>
             <Link to="/profile" className="navbar-link">My profile</Link>
+            <Link to="/userStats" className="navbar-link">My stats</Link>
+
             <Link to="/run-plans" className="navbar-link">Running Plans</Link>
             <button onClick={handleLogout} className="navbar-link logout-button">Logout</button>
           </>
         ) : (
           <>
+          <Link to="/exercises" className="navbar-link">Get ready</Link>
             <Link to="/login" className="navbar-link">Login</Link>
             <Link to="/register" className="navbar-link">Register</Link>
           </>
