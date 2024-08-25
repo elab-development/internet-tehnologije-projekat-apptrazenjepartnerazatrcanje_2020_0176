@@ -263,3 +263,59 @@
 .delete-plan-button:hover {
   background-color: #c82333;
 }
+.run-plan-details {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 30px;
+  border-radius: 8px;
+  max-width: 800px;
+  margin: 40px auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: #333;
+}
+
+.run-plan-details h2 {
+  font-size: 2em;
+  margin-bottom: 15px;
+  color: #007bff;
+}
+
+.run-plan-details p {
+  font-size: 1.2em;
+  margin: 10px 0;
+  color: #555;
+}
+
+.run-plan-details h3 {
+  font-size: 1.6em;
+  margin-top: 30px;
+  color: #007bff;
+}
+
+.run-plan-details ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 20px 0;
+}
+
+.run-plan-details ul li {
+  background-color: #f9f9f9;
+  margin-bottom: 10px;
+  padding: 15px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  transition: background-color 0.3s ease;
+}
+
+.run-plan-details ul li:hover {
+  background-color: #e9ecef;
+}
+
+.run-plan-details ul li strong {
+  color: #007bff;
+}
+
+.run-plan-details .error {
+  color: red;
+  margin-top: 20px;
+  font-size: 1.2em;
+}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import { FaPlus } from "react-icons/fa";
 const CommentSection = ({ planId }) => {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
@@ -77,7 +77,7 @@ const CommentSection = ({ planId }) => {
           placeholder="Add a comment..."
           required
         />
-        <button type="submit">Add Comment</button>
+        <button type="submit"><FaPlus></FaPlus></button>
       </form>
       {error && <p className="error">{error}</p>}
     </div>

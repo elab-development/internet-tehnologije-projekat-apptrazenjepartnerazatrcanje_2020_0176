@@ -4,6 +4,7 @@ import { useTable, useSortBy, usePagination, useGlobalFilter } from 'react-table
 import { matchSorter } from 'match-sorter';
 import axios from 'axios';
 import Modal from 'react-modal';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const MojProfil = () => {
   const { user, loading, error, setUser } = useUserProfile();
@@ -17,6 +18,8 @@ const MojProfil = () => {
     distance: '',
   });
   const [currentPlanId, setCurrentPlanId] = useState(null); //  ID trenutnog plana koji se uređuje
+
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const columns = React.useMemo(
     () => [
@@ -47,6 +50,12 @@ const MojProfil = () => {
               className="delete-plan-button"
             >
               Obriši
+            </button>
+            <button
+              onClick={() => navigate(`/runplan/${row.original.id}`)} // Navigate to the details page
+              className="details-plan-button"
+            >
+              Detalji
             </button>
           </>
         ),
