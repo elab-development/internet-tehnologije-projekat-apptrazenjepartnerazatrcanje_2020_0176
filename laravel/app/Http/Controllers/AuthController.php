@@ -95,53 +95,50 @@ class AuthController extends Controller
      */
     public function update(Request $request)
     {
-        // Validiramo unos, zabranjujući promenu email-a
+       
         $validator = Validator::make($request->all(), [
-            'name' => 'nullable|string|max:255',
-            'password' => 'nullable|string|min:8|confirmed',
-            'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg', // Validacija za novu sliku
+            'profile_photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validacija za sliku
         ]);
-
+        // Provera da li je fajl poslat
+    if ($request->hasFile('profile_photo')) {
+        $file = $request->file('profile_photo');
+        return response()->json([
+            'success' => true,
+            'original_name' => $file->getClientOriginalName(),
+            'mime_type' => $file->getMimeType(),
+            'size' => $file->getSize(),
+        ], 200);
+    } else {
+        return response()->json(['error' => 'No file received'], 400);
+    }
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
-
+    
         $user = $request->user(); // Dohvatamo trenutno ulogovanog korisnika
-
-        DB::beginTransaction(); // Započinjemo transakciju
-
-        try {
-            // Ako je postavljena nova slika, prvo brišemo staru
-            if ($request->hasFile('profile_photo')) {
-                if ($user->profilePhoto) {
-                    Storage::disk('public')->delete($user->profilePhoto); // Brisanje stare slike
-                }
-
-                // Čuvamo novu sliku i ažuriramo putanju u bazi
-                $user->profilePhoto = $request->file('profile_photo')->store('profile_photos', 'public');
+    
+        $profilePhotoPath = null;
+    
+        // Proveravamo da li je slika postavljena
+        if ($request->hasFile('profile_photo')) {
+            // Ako korisnik već ima sliku, brišemo staru
+            if ($user->profilePhoto && Storage::disk('public')->exists($user->profilePhoto)) {
+                Storage::disk('public')->delete($user->profilePhoto);
             }
-
-            // Ažuriramo ostale atribute korisnika
-            $user->name = $request->name;
-
-            // Ako je postavljena nova lozinka, hashujemo je i ažuriramo
-            if ($request->password) {
-                $user->password = Hash::make($request->password);
-            }
-
-            $user->save(); // Čuvamo promene u bazi
-
-            DB::commit(); // Zatvaramo transakciju
-
-            return response()->json([
-                'message' => 'User updated successfully',
-                'profile_photo_url' => $user->profilePhoto ? Storage::url($user->profilePhoto) : null,
-            ]);
-        } catch (\Exception $e) {
-            DB::rollBack(); // U slučaju greške, vraćamo promene
-            return response()->json(['error' => 'An error occurred while updating the user.'], 500);
+    
+            // Čuvamo novu sliku i ažuriramo putanju u bazi
+            $profilePhotoPath = $request->file('profile_photo')->store('profile_photos', 'public');
+            $user->profilePhoto = $profilePhotoPath;
         }
+    
+        $user->save(); // Čuvamo promene u bazi
+    
+        return response()->json([
+            'message' => 'User updated successfully',
+            'profile_photo_url' => $profilePhotoPath ? Storage::url($profilePhotoPath) : null,
+        ]);
     }
+    
     public function getUserInfo(Request $request)
     {
         $user = $request->user(); // Dohvatamo trenutno ulogovanog korisnika
