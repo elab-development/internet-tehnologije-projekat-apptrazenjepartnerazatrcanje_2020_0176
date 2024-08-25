@@ -50,7 +50,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/comments', [CommentController::class, 'store']);
     Route::put('/comments/{id}', [CommentController::class, 'update']);
     Route::delete('/comments/{id}', [CommentController::class, 'destroy']);
+
+    
+Route::apiResource('user-stats', UserStatController::class);
 });
 
-
-Route::apiResource('user-stats', UserStatController::class);

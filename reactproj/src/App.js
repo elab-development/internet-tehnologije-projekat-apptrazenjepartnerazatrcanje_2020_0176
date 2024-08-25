@@ -10,6 +10,7 @@ import 'leaflet/dist/leaflet.css';
 import Navbar from './Komponente/Navigacija/Navbar';
 import MojProfil from './Komponente/Auth/MojProfil';
 import RunPlanDetails from './Komponente/PlanoviTrcanja/RunPlanDetails';
+import UserStats from './Komponente/Stats/UserStats';
 
 function App() {
   const [token, setToken] = useState(null);
@@ -38,7 +39,7 @@ function App() {
           <Route path="/run-plans" element={<PrikazPlanova />} />
 
 
-
+          <Route path="/userStats" element={<UserStats />} />
 
           <Route path="/profile" element={<MojProfil />} />
         </Routes>

@@ -14,7 +14,7 @@ class UserStatController extends Controller
      */
     public function index()
     {
-        $userStats = UserStat::all();
+        $userStats = UserStat::where('user_id', auth()->id())->get();
         return UserStatResource::collection($userStats);
     }
 
@@ -24,7 +24,6 @@ class UserStatController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required|exists:users,id',
             'total_distance' => 'required|numeric|min:0',
             'total_runs' => 'required|integer|min:0',
         ]);
@@ -33,7 +32,11 @@ class UserStatController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        $userStat = UserStat::create($request->all());
+        $userStat = UserStat::create([
+            'user_id' => auth()->id(), // Automatski dodeljuje ID ulogovanog korisnika
+            'total_distance' => $request->total_distance,
+            'total_runs' => $request->total_runs,
+        ]);
 
         return new UserStatResource($userStat);
     }
@@ -43,7 +46,10 @@ class UserStatController extends Controller
      */
     public function show($id)
     {
-        $userStat = UserStat::findOrFail($id);
+        $userStat = UserStat::where('id', $id)
+            ->where('user_id', auth()->id())
+            ->firstOrFail();
+
         return new UserStatResource($userStat);
     }
 
@@ -52,10 +58,11 @@ class UserStatController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $userStat = UserStat::findOrFail($id);
+        $userStat = UserStat::where('id', $id)
+            ->where('user_id', auth()->id())
+            ->firstOrFail();
 
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required|exists:users,id',
             'total_distance' => 'required|numeric|min:0',
             'total_runs' => 'required|integer|min:0',
         ]);
@@ -64,7 +71,10 @@ class UserStatController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        $userStat->update($request->all());
+        $userStat->update([
+            'total_distance' => $request->total_distance,
+            'total_runs' => $request->total_runs,
+        ]);
 
         return new UserStatResource($userStat);
     }
@@ -74,7 +84,10 @@ class UserStatController extends Controller
      */
     public function destroy($id)
     {
-        $userStat = UserStat::findOrFail($id);
+        $userStat = UserStat::where('id', $id)
+            ->where('user_id', auth()->id())
+            ->firstOrFail();
+
         $userStat->delete();
 
         return response()->json(['message' => 'UserStat deleted successfully']);
