@@ -74,4 +74,21 @@ class CommentController extends Controller
 
         return response()->json(null, 204);
     }
+
+    public function getCommentsByRunPlan(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        'run_plan_id' => 'required|exists:run_plans,id',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json(['errors' => $validator->errors()], 422);
+    }
+
+    // Filtriramo komentare na osnovu `run_plan_id`
+    $comments = Comment::where('run_plan_id', $request->run_plan_id)->get();
+
+    return CommentResource::collection($comments);
+}
+
 }

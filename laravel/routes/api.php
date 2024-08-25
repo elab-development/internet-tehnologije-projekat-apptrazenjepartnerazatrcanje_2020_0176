@@ -26,7 +26,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 Route::put('/user', [AuthController::class, 'update'])->middleware('auth:sanctum');
 Route::get('/user', [AuthController::class, 'getUserInfo'])->middleware('auth:sanctum');
 Route::get('/run-plans', [RunPlanController::class, 'index']);
-Route::get('/comments', [CommentController::class, 'index']);
+Route::get('/comments', [CommentController::class, 'getCommentsByRunPlan']);
 Route::get('/run-plans/search', [RunPlanController::class, 'search']); // Advanced search route
 Route::get('/run-participants/sort', [RunParticipantController::class, 'sort']); // Sorting route
 Route::middleware('auth:sanctum')->group(function () {

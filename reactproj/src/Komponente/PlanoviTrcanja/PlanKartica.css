@@ -1,23 +1,93 @@
- 
 .plan-card {
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 20px;
-    border-radius: 8px;
-    color: #333;
-    text-align: left;
-    margin-bottom: 20px;
-  }
-  
-  .plan-card h2 {
-    margin-bottom: 10px;
-    font-size: 1.5em;
-  }
-  
-  .plan-card p {
-    margin: 5px 0;
-  }
-  
-  .map-container {
-    margin-top: 15px;
-  }
-  
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: #333;
+  text-align: left;
+  margin-bottom: 20px;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.plan-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.plan-card h2 {
+  margin-bottom: 15px;
+  font-size: 1.6em;
+  color: #007bff;
+}
+
+.plan-card p {
+  margin: 8px 0;
+  font-size: 1em;
+  color: #555;
+}
+
+.map-container {
+  margin-top: 15px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+}
+
+.comment-section {
+  margin-top: 20px;
+}
+
+.comment-section h3 {
+  font-size: 1.4rem;
+  margin-bottom: 15px;
+  color: #007bff;
+}
+
+.comment-section .comment {
+  margin-bottom: 12px;
+  padding: 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  background-color: #f4f4f4;
+}
+
+.comment-section textarea {
+  width: 100%;
+  min-height: 80px;
+  padding: 12px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+  font-size: 1em;
+  color: #333;
+}
+
+.comment-section textarea:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.comment-section button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.comment-section button:hover {
+  background-color: #0056b3;
+}
+
+.comment-section button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.error {
+  color: red;
+  margin-top: 10px;
+  font-size: 0.9rem;
+}

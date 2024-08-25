@@ -4,6 +4,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import axios from 'axios';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import CommentSection from './CommentSection'; // Dodajemo import za CommentSection
 
 delete L.Icon.Default.prototype._getIconUrl;
 
@@ -19,10 +20,9 @@ const mapContainerStyle = {
 };
 
 const PlanKartica = ({ plan }) => {
-  const [isJoined, setIsJoined] = useState(false); // Pratimo da li je korisnik već pridružen planu
+  const [isJoined, setIsJoined] = useState(false);
   const [error, setError] = useState(null);
 
-  // Proveravamo da li je plan već pridružen pri učitavanju komponente
   useEffect(() => {
     const joinedPlans = JSON.parse(localStorage.getItem('joinedPlans')) || [];
     if (joinedPlans.includes(plan.id)) {
@@ -42,15 +42,10 @@ const PlanKartica = ({ plan }) => {
           },
         }
       );
-
-      // Ažuriramo stanje da je plan pridružen
       setIsJoined(true);
-
-      // Dodajemo plan u LocalStorage
       const joinedPlans = JSON.parse(localStorage.getItem('joinedPlans')) || [];
       joinedPlans.push(plan.id);
       localStorage.setItem('joinedPlans', JSON.stringify(joinedPlans));
-
     } catch (err) {
       setError('Failed to join the plan. Please try again.');
       console.error(err);
@@ -86,6 +81,9 @@ const PlanKartica = ({ plan }) => {
         {isJoined ? 'Joined' : 'Join Plan'}
       </button>
       {error && <p className="error">{error}</p>}
+
+     
+      <CommentSection planId={plan.id} />
     </div>
   );
 };
