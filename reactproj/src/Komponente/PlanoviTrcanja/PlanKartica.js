@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-
-
+import axios from 'axios';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -17,8 +16,47 @@ L.Icon.Default.mergeOptions({
 const mapContainerStyle = {
     width: '100%',
     height: '200px',
-  };
+};
+
 const PlanKartica = ({ plan }) => {
+  const [isJoined, setIsJoined] = useState(false); // Pratimo da li je korisnik već pridružen planu
+  const [error, setError] = useState(null);
+
+  // Proveravamo da li je plan već pridružen pri učitavanju komponente
+  useEffect(() => {
+    const joinedPlans = JSON.parse(localStorage.getItem('joinedPlans')) || [];
+    if (joinedPlans.includes(plan.id)) {
+      setIsJoined(true);
+    }
+  }, [plan.id]);
+
+  const handleJoinPlan = async () => {
+    try {
+      const token = sessionStorage.getItem('auth_token');
+      await axios.post(
+        'http://127.0.0.1:8000/api/run-participants',
+        { run_plan_id: plan.id },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      // Ažuriramo stanje da je plan pridružen
+      setIsJoined(true);
+
+      // Dodajemo plan u LocalStorage
+      const joinedPlans = JSON.parse(localStorage.getItem('joinedPlans')) || [];
+      joinedPlans.push(plan.id);
+      localStorage.setItem('joinedPlans', JSON.stringify(joinedPlans));
+
+    } catch (err) {
+      setError('Failed to join the plan. Please try again.');
+      console.error(err);
+    }
+  };
+
   const latitude = parseFloat(plan.latitude);
   const longitude = parseFloat(plan.longitude);
 
@@ -40,6 +78,14 @@ const PlanKartica = ({ plan }) => {
           </Marker>
         </MapContainer>
       </div>
+      <button 
+        onClick={handleJoinPlan} 
+        disabled={isJoined} 
+        className="join-plan-button"
+      >
+        {isJoined ? 'Joined' : 'Join Plan'}
+      </button>
+      {error && <p className="error">{error}</p>}
     </div>
   );
 };
