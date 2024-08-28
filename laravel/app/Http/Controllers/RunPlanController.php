@@ -13,11 +13,13 @@ use Illuminate\Support\Facades\DB;
 class RunPlanController extends Controller
 {
     // Fetch all run plans
-    public function index()
+    public function index(Request $request)
     {
-        $runPlans = RunPlan::all();
+        $perPage = $request->query('per_page', 10); // Po defaultu, prikazujemo 10 planova po stranici
+        $runPlans = RunPlan::paginate($perPage);
         return RunPlanResource::collection($runPlans);
     }
+    
 
     // Fetch a single run plan by ID
     public function show($id)
