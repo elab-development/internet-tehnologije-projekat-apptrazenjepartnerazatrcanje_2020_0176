@@ -83,4 +83,17 @@ class AdminController extends Controller
 
         return response()->json(['message' => 'User role updated successfully']);
     }
+     /**
+     * Soft delete a user.
+     */
+    public function deleteUser($id)
+    {
+        $user = User::findOrFail($id);
+
+        if ($user->delete()) {
+            return response()->json(['message' => 'User soft deleted successfully']);
+        } else {
+            return response()->json(['error' => 'Failed to delete user'], 500);
+        }
+    }
 }

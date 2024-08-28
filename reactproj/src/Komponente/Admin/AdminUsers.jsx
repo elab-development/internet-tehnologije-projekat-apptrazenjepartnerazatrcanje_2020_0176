@@ -46,6 +46,24 @@ const AdminUsers = () => {
     }
   };
 
+  const handleDeleteUser = async (userId) => {
+    const token = sessionStorage.getItem('auth_token');
+    if (window.confirm('Are you sure you want to delete this user?')) {
+      try {
+        await axios.delete(`http://127.0.0.1:8000/api/admin/users/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        // Remove the deleted user from the local state
+        setUsers(users.filter(user => user.id !== userId));
+      } catch (err) {
+        console.error('Error deleting user:', err);
+        alert('Failed to delete user.');
+      }
+    }
+  };
+
   if (loading) return <p>Loading users...</p>;
   if (error) return <p>Error loading users: {error.message}</p>;
 
@@ -79,7 +97,7 @@ const AdminUsers = () => {
                   <option value="3">Admin</option>
                 </select>
               </td>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>
+              <td style={{ border: '1px solid #ddd', padding: '8px', display: 'flex', gap: '10px' }}>
                 <button
                   onClick={() => handleRoleChange(user.id, user.role_id)}
                   style={{
@@ -92,6 +110,19 @@ const AdminUsers = () => {
                   }}
                 >
                   Save
+                </button>
+                <button
+                  onClick={() => handleDeleteUser(user.id)}
+                  style={{
+                    backgroundColor: '#f44336',
+                    color: 'white',
+                    padding: '10px',
+                    borderRadius: '5px',
+                    border: 'none',
+                    cursor: 'pointer',
+                  }}
+                >
+                  Delete
                 </button>
               </td>
             </tr>

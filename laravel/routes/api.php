@@ -64,5 +64,7 @@ Route::get('/admin/users', [AdminController::class, 'getUsers']);
 
 // Route to update user role
 Route::put('/admin/users/{id}/role', [AdminController::class, 'updateUserRole']);
+Route::delete('/admin/users/{id}', [AdminController::class, 'deleteUser'])->middleware('auth:sanctum');
+
 });
 
