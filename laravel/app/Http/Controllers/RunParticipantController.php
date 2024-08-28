@@ -98,4 +98,5 @@ class RunParticipantController extends Controller
          $runParticipants = RunParticipant::orderBy($request->sort_by, $request->order)->get();
          return RunParticipantResource::collection($runParticipants);
      }
+
 }

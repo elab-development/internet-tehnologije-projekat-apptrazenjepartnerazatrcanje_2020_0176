@@ -142,4 +142,17 @@ class RunPlanController extends Controller
   
           return RunPlanResource::collection($runPlans);
       }
+
+      
+      // Fetch all run plans where a specific user has participated
+    public function getUserRunPlans($userId)
+    {
+        // Get all run plan IDs where the user is a participant
+        $runPlanIds = RunParticipant::where('user_id', $userId)->pluck('run_plan_id');
+
+        // Fetch the run plans using the IDs
+        $runPlans = RunPlan::whereIn('id', $runPlanIds)->get();
+
+        return RunPlanResource::collection($runPlans);
+    }
 }

@@ -21,7 +21,6 @@ use App\Http\Controllers\AdminController;
 
 
 
-Route::middleware('auth:sanctum')->get('/admin/statistics', [AdminController::class, 'getStatistics']);
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -41,7 +40,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/run-participants/{id}', [RunParticipantController::class, 'destroy']);
     
 
-    
+    Route::get('/run-plans/user/{id}', [RunPlanController::class, 'getUserRunPlans']);
     Route::get('/run-plans/{id}', [RunPlanController::class, 'show']);
     Route::post('/run-plans', [RunPlanController::class, 'store']);
     Route::put('/run-plans/{id}', [RunPlanController::class, 'update']);
@@ -56,5 +55,14 @@ Route::middleware('auth:sanctum')->group(function () {
 
     
 Route::apiResource('user-stats', UserStatController::class);
+
+
+Route::get('/admin/statistics', [AdminController::class, 'getStatistics']);
+
+// Route to get all users
+Route::get('/admin/users', [AdminController::class, 'getUsers']);
+
+// Route to update user role
+Route::put('/admin/users/{id}/role', [AdminController::class, 'updateUserRole']);
 });
 

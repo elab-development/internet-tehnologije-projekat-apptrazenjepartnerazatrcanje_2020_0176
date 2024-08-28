@@ -8,6 +8,7 @@ use App\Models\Comment;
 use App\Models\RunParticipant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
@@ -52,5 +53,34 @@ class AdminController extends Controller
             'most_active_user' => $mostActiveUser ? $mostActiveUser->name : null,
             'new_users_last_30_days' => $newUsersLast30Days,
         ]);
+    }
+
+    /**
+     * Get all users.
+     */
+    public function getUsers()
+    {
+        $users = User::all();
+        return response()->json($users);
+    }
+
+    /**
+     * Update a user's role.
+     */
+    public function updateUserRole(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'role_id' => 'required|integer|exists:roles,id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $user = User::findOrFail($id);
+        $user->role_id = $request->role_id;
+        $user->save();
+
+        return response()->json(['message' => 'User role updated successfully']);
     }
 }
