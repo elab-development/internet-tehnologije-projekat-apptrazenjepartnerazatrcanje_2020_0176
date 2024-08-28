@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\UserStatResource;
 use App\Models\UserStat;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class UserStatController extends Controller
@@ -91,5 +92,27 @@ class UserStatController extends Controller
         $userStat->delete();
 
         return response()->json(['message' => 'UserStat deleted successfully']);
+    }
+
+    public function getAggregatedStats()
+    {
+        // Calculate the average total distance and total runs for all users
+        $averageStats = UserStat::select(
+            DB::raw('AVG(total_distance) as avg_distance'),
+            DB::raw('AVG(total_runs) as avg_runs')
+        )->first();
+
+        // Get the highest total distance and total runs among all users
+        $maxStats = UserStat::select(
+            DB::raw('MAX(total_distance) as max_distance'),
+            DB::raw('MAX(total_runs) as max_runs')
+        )->first();
+
+        return response()->json([
+            'average_distance' => $averageStats->avg_distance,
+            'average_runs' => $averageStats->avg_runs,
+            'max_distance' => $maxStats->max_distance,
+            'max_runs' => $maxStats->max_runs,
+        ]);
     }
 }

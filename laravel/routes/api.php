@@ -31,6 +31,7 @@ Route::get('/run-plans', [RunPlanController::class, 'index']);
 Route::get('/comments', [CommentController::class, 'getCommentsByRunPlan']);
 Route::get('/run-plans/search', [RunPlanController::class, 'search']); // Advanced search route
 Route::get('/run-participants/sort', [RunParticipantController::class, 'sort']); // Sorting route
+Route::middleware('auth:sanctum')->get('/user-stats/aggregated', [UserStatController::class, 'getAggregatedStats']);
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/run-participants', [RunParticipantController::class, 'index']);
