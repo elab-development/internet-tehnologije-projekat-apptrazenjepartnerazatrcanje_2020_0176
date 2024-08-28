@@ -43,4 +43,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+     // Dodavanje relacije sa RunPlan modelom
+     public function runPlans()
+     {
+         return $this->hasMany(RunPlan::class, 'user_id');
+     }
 }

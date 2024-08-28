@@ -12,6 +12,7 @@ import MojProfil from './Komponente/Auth/MojProfil';
 import RunPlanDetails from './Komponente/PlanoviTrcanja/RunPlanDetails';
 import UserStats from './Komponente/Stats/UserStats';
 import ExerciseList from './Komponente/SpoljniApi/ExerciseList';
+import AdminPanel from './Komponente/Admin/AdminPanel';
 
 function App() {
   const [token, setToken] = useState(null);
@@ -42,6 +43,7 @@ function App() {
 
           <Route path="/userStats" element={<UserStats />} />
           <Route path="/exercises" element={<ExerciseList />} />
+          <Route path="/adminPanel" element={<AdminPanel />} />
 
 
           <Route path="/profile" element={<MojProfil />} />

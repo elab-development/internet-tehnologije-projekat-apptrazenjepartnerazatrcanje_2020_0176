@@ -7,7 +7,7 @@ use App\Http\Controllers\UserStatController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\RunParticipantController;
 use App\Http\Controllers\RunPlanController;
-
+use App\Http\Controllers\AdminController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -19,6 +19,9 @@ use App\Http\Controllers\RunPlanController;
 |
 */
 
+
+
+Route::middleware('auth:sanctum')->get('/admin/statistics', [AdminController::class, 'getStatistics']);
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
