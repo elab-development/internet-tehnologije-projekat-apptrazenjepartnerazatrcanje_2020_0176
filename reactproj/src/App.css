@@ -51,6 +51,7 @@
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin: 5px;
 }
 
 .edit-profile-button:hover {
@@ -253,11 +254,12 @@
 .delete-plan-button {
   background-color: #dc3545;
   color: white;
-  padding: 5px 10px;
+  padding:   10px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin:5px;
 }
 
 .delete-plan-button:hover {
@@ -324,7 +326,7 @@
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin: 20px;
+ 
   color: #333;
 }
 

@@ -5,7 +5,7 @@ import './Login.css';
 import PoljeZaUnos from './PoljeZaUnos';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
-const Login = ({ setToken }) => {
+const Login = ({ setToken, setUser }) => {  // Dodajemo setUser prop
   const [formData, setFormData] = useState({
     email: 'marcel.pagac@example.net',
     password: 'password',
@@ -30,20 +30,28 @@ const Login = ({ setToken }) => {
     try {
       const response = await axios.post('http://127.0.0.1:8000/api/login', formData);
       const token = response.data.access_token;
+      const user = response.data.user;
 
       // Sačuvaj token u session storage-u
       sessionStorage.setItem('auth_token', token);
 
-      // Postavi token u App.js
+      // Sačuvaj podatke o korisniku u session storage
+      sessionStorage.setItem('user', JSON.stringify(user));
+
+      // Postavi token i korisnika u App.js
       setToken(token);
+      setUser(user);
+
+      // Preusmeri korisnika na osnovu role_id
+      if (user.role_id === 1) {
+        navigate('/adminPanel');
+      } else {
+        navigate('/run-plans');
+      }
 
       // Postavi poruku o uspehu i izbriši greške
       setSuccessMessage('Login successful!');
       setErrors({});
-
-      // Preusmeri korisnika na stranicu sa planovima trčanja
-      navigate('/run-plans');
-      
     } catch (error) {
       if (error.response && error.response.data) {
         setErrors({ login: 'Invalid credentials. Please try again.' });

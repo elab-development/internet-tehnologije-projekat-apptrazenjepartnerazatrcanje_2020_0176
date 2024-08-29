@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Navbar.css';
 
-const Navbar = ({ token, setToken }) => {
+const Navbar = ({ token, setToken, user }) => {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -14,8 +14,9 @@ const Navbar = ({ token, setToken }) => {
         }
       });
 
-      // Obriši token iz sessionStorage
+      // Obriši token i korisnika iz sessionStorage
       sessionStorage.removeItem('auth_token');
+      sessionStorage.removeItem('user');
       setToken(null);
 
       // Preusmeri korisnika na početnu stranicu
@@ -30,18 +31,26 @@ const Navbar = ({ token, setToken }) => {
     <nav className="navbar">
       <Link to="/" className="navbar-brand">My Running App</Link>
       <div className="navbar-links">
-        <Link to="/" className="navbar-link">Home</Link>
+      
         {token ? (
           <>
-            <Link to="/profile" className="navbar-link">My profile</Link>
-            <Link to="/userStats" className="navbar-link">My stats</Link>
-
-            <Link to="/run-plans" className="navbar-link">Running Plans</Link>
+            {user && user.role_id === 1 ? (
+              <>
+                <Link to="/adminPanel" className="navbar-link">Admin Panel</Link>
+                <Link to="/adminUsers" className="navbar-link">Manage Users</Link>
+              </>
+            ) : (
+              <>
+                <Link to="/profile" className="navbar-link">My Profile</Link>
+                <Link to="/userStats" className="navbar-link">My Stats</Link>
+                <Link to="/run-plans" className="navbar-link">Running Plans</Link>
+              </>
+            )}
             <button onClick={handleLogout} className="navbar-link logout-button">Logout</button>
           </>
         ) : (
           <>
-          <Link to="/exercises" className="navbar-link">Get ready</Link>
+            <Link to="/exercises" className="navbar-link">Get Ready</Link>
             <Link to="/login" className="navbar-link">Login</Link>
             <Link to="/register" className="navbar-link">Register</Link>
           </>

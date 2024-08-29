@@ -16,39 +16,43 @@ import AdminUsers from './Komponente/Admin/AdminUsers';
 
 function App() {
   const [token, setToken] = useState(null);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    // Proveri da li postoji token u sessionStorage kada se aplikacija učita
+ 
     const storedToken = sessionStorage.getItem('auth_token');
+    const storedUser = sessionStorage.getItem('user');
+    
     if (storedToken) {
       setToken(storedToken);
+    }
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
     }
   }, []);
 
   return (
     <Router>
       <div className="App">
-        <Navbar token={token} setToken={setToken} />
+        <Navbar token={token} setToken={setToken} user={user} setUser={setUser} /> {/* Prosledi user kao prop */}
         <Routes>
           <Route path="/" element={<Pocetna />} />
           <Route path="/register" element={<Registracija />} />
           <Route 
             path="/login" 
-            element={<Login setToken={setToken} />} 
+            element={<Login setToken={setToken} setUser={setUser} />}   
           />       
+
+<Route path="/exercises" element={<ExerciseList />} />
           <Route path="/runplan/:id" element={<RunPlanDetails />} />
-
           <Route path="/run-plans" element={<PrikazPlanova />} />
-
-
           <Route path="/userStats" element={<UserStats />} />
-          <Route path="/exercises" element={<ExerciseList />} />
+          <Route path="/profile" element={<MojProfil />} />
 
-          
+         
           <Route path="/adminPanel" element={<AdminPanel />} /> 
           <Route path="/adminUsers" element={<AdminUsers />} />
-
-          <Route path="/profile" element={<MojProfil />} />
+         
         </Routes>
       </div>
     </Router>
