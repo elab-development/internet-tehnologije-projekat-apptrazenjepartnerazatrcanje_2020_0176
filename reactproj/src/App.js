@@ -43,9 +43,9 @@ function App() {
 
           <Route path="/userStats" element={<UserStats />} />
           <Route path="/exercises" element={<ExerciseList />} />
-          <Route path="/adminPanel" element={<AdminPanel />} />
 
- 
+          
+          <Route path="/adminPanel" element={<AdminPanel />} /> 
           <Route path="/adminUsers" element={<AdminUsers />} />
 
           <Route path="/profile" element={<MojProfil />} />

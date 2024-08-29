@@ -92,9 +92,8 @@ const AdminUsers = () => {
                   onChange={(e) => handleRoleChange(user.id, e.target.value)}
                   style={{ padding: '5px', borderRadius: '4px' }}
                 >
-                  <option value="1">User</option>
-                  <option value="2">Moderator</option>
-                  <option value="3">Admin</option>
+                  <option value="1">Admin</option>
+                  <option value="2">Ulogovan</option>
                 </select>
               </td>
               <td style={{ border: '1px solid #ddd', padding: '8px', display: 'flex', gap: '10px' }}>
