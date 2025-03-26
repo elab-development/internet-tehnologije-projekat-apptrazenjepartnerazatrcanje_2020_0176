@@ -1,0 +1,62 @@
+.login-container {
+    background-image: url('https://www.verywellfit.com/thmb/IDzX1e8U2FfxDLS5jn69tMJCYnQ=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/2911965-GettyImages-874883592-e71ccdffb26344ae99e41f4fb4d65ae0.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .login-content {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    color: #333;
+    max-width: 500px;
+    width: 100%;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .error-text {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 5px;
+  }
+  
+  .success-text {
+    color: green;
+    font-size: 1em;
+    margin-top: 10px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #218838;
+  }
+  

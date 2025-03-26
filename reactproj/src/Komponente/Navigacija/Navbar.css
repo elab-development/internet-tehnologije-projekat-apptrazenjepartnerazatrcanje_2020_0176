@@ -1,0 +1,48 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5); /* Providna crna pozadina */
+    padding: 10px 20px;
+    position: fixed; /* Da bi navbar bio fiksiran na vrhu */
+    width: 100%; /* Da zauzme celu širinu ekrana */
+    top: 0;
+    left: 0;
+    z-index: 1000; /* Da bude iznad drugih elemenata */
+  }
+  
+  .navbar-brand {
+    color: white;
+    font-size: 1.5em;
+    text-decoration: none;
+  }
+  
+  .navbar-links {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .navbar-link {
+    color: white;
+    text-decoration: none;
+    font-size: 1em;
+    transition: color 0.3s ease;
+  }
+  
+  .navbar-link:hover {
+    color: #f2602b;  
+  }
+  
+  .logout-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1em;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+  .logout-button:hover {
+    color: #f2602b;
+  }
+  
